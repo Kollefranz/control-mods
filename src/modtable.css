@@ -1,0 +1,419 @@
+/* Mod table (appended to hud.css). Flexbox + vh only, like the rest of the game UI.
+   Everything is scoped under .mt-on so a failed module load leaves the vanilla UI untouched. */
+
+/* ---- layout: wider list, details panel pushed right while a table is open ---- */
+.mt-on .weapon-mods__items,
+.mt-on .player-mods__items {
+  width: 92vh;
+  height: 42vh;
+}
+.mt-on .scroll-view.weapon-mods__items,
+.mt-on .scroll-view.player-mods__items {
+  top: 0;
+}
+.mt-open .menu-tab--gear .menu-tab__details {
+  margin-left: calc(8.024691358vw + 27vh);
+}
+
+/* ---- toolbar ---- */
+.mt-on .mt-bar {
+  display: flex;
+  flex-direction: column;
+  width: 92vh;
+  flex-shrink: 0;
+  margin-bottom: 0.9vh;
+  transition: opacity var(--layout-transition-time) var(--easing), transform var(--layout-transition-time) var(--easing);
+}
+/* same hide behaviour the vanilla .mod-sort had */
+.mt-on .weapon-mods--hidden .mt-bar {
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(0, 27.7777777778vh);
+}
+.mt-on .player-mods--hidden .mt-bar {
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(0, 37.037037037vh);
+}
+.mt-on .mt-bar__line {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  min-height: 3.6vh;
+  margin-bottom: 0.5vh;
+}
+.mt-on .mt-bar .action-button {
+  font-family: Interstate-BoldCondensed;
+  font-size: var(--font-size-label);
+  text-transform: uppercase;
+  padding: 0 1.4vh 0 0;
+  border: none;
+}
+.mt-on .mt-bar .action-button:hover {
+  background: transparent;
+  color: var(--selected-color);
+}
+.mt-on .mt-sortname {
+  font-size: var(--font-size-description);
+  color: var(--selected-color);
+  font-weight: bold;
+}
+.mt-on .mt-spacer {
+  flex-grow: 1;
+}
+.mt-on .mt-count {
+  font-size: var(--font-size-description);
+  color: var(--text-default-color);
+  margin-right: 1.2vh;
+}
+.mt-on .mt-label {
+  font-family: Interstate-BoldCondensed;
+  font-size: var(--font-size-description);
+  text-transform: uppercase;
+  color: var(--text-default-color);
+  width: 5vh;
+  flex-shrink: 0;
+}
+.mt-on .mt-chip {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 3.1vh;
+  padding: 0 1.1vh;
+  margin: 0 0.6vh 0.4vh 0;
+  font-size: var(--font-size-description);
+  color: var(--selected-color);
+  background: var(--default-color);
+  border: 1px solid var(--default-color-border);
+  transition: background var(--highlight-transition-time) var(--easing), color var(--highlight-transition-time) var(--easing);
+}
+.mt-on .mt-chip:hover {
+  background: var(--light95-25);
+}
+.mt-on .mt-chip--on {
+  background: var(--light95);
+  color: var(--text-selected-color);
+  border-color: var(--light95);
+}
+.mt-on .mt-chip--on:hover {
+  background: var(--light95);
+}
+.mt-on .mt-chip__count {
+  margin-left: 0.7vh;
+  opacity: 0.55;
+  font-size: var(--font-size-small);
+}
+.mt-on .mt-chip--clear {
+  margin-right: 0;
+  border-color: var(--warning-color);
+}
+.mt-on .mt-chip--fits {
+  margin-left: 1.4vh;
+}
+.mt-on .mt-chip--tier {
+  min-width: 3.4vh;
+  justify-content: center;
+}
+.mt-on .mt-chip--tier.mt-chip--common { border-color: var(--rarity-common); }
+.mt-on .mt-chip--tier.mt-chip--uncommon { border-color: var(--rarity-uncommon); }
+.mt-on .mt-chip--tier.mt-chip--rare { border-color: var(--rarity-rare); }
+.mt-on .mt-chip--tier.mt-chip--legendary { border-color: var(--rarity-legendary); }
+.mt-on .mt-chip--tier.mt-chip--exquisite { border-color: var(--rarity-exquisite); }
+.mt-on .mt-chip--tier.mt-chip--ascendant { border-color: var(--rarity-ascendant); }
+.mt-on .mt-chip--tier.mt-chip--on.mt-chip--common { background: var(--rarity-common); color: #fff; }
+.mt-on .mt-chip--tier.mt-chip--on.mt-chip--uncommon { background: var(--rarity-uncommon); color: #fff; }
+.mt-on .mt-chip--tier.mt-chip--on.mt-chip--rare { background: var(--rarity-rare); color: #fff; }
+.mt-on .mt-chip--tier.mt-chip--on.mt-chip--legendary { background: var(--rarity-legendary); color: #fff; }
+.mt-on .mt-chip--tier.mt-chip--on.mt-chip--exquisite { background: var(--rarity-exquisite); color: #fff; }
+.mt-on .mt-chip--tier.mt-chip--on.mt-chip--ascendant { background: var(--rarity-ascendant); color: #fff; }
+
+/* ---- column headers ---- */
+.mt-on .mt-heads {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 3.4vh;
+  padding: 0 1.2vh 0 2.6vh;
+  border-bottom: 1px solid var(--default-color-border);
+}
+.mt-on .mt-head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: Interstate-BoldCondensed;
+  font-size: var(--font-size-description);
+  text-transform: uppercase;
+  color: var(--text-default-color);
+  white-space: nowrap;
+  transition: color var(--highlight-transition-time) var(--easing);
+}
+.mt-on .mt-head:hover,
+.mt-on .mt-head--on {
+  color: var(--selected-color);
+}
+.mt-on .mt-head__arrow {
+  margin-left: 0.6vh;
+  font-size: 1.2vh;
+}
+.mt-on .mt-empty {
+  padding: 2vh 1.2vh;
+  font-size: var(--font-size-description);
+  color: var(--text-default-color);
+}
+
+/* ---- shared column widths (header + rows) ---- */
+.mt-on .mt-head--name, .mt-on .mt-cell--name { width: 23vh; flex-shrink: 0; }
+.mt-on .mt-head--weapon, .mt-on .mt-cell--weapon { width: 9vh; flex-shrink: 0; }
+.mt-on .mt-head--type, .mt-on .mt-cell--type { width: 10vh; flex-shrink: 0; }
+.mt-on .mt-head--effect, .mt-on .mt-cell--effect { flex-grow: 1; flex-shrink: 1; min-width: 0; }
+.mt-on .mt-head--value, .mt-on .mt-cell--value { width: 8vh; flex-shrink: 0; }
+.mt-on .mt-head--damage, .mt-on .mt-cell--damage { width: 16.5vh; flex-shrink: 0; }
+.mt-on .mt-head--tier, .mt-on .mt-cell--tier { width: 12.5vh; flex-shrink: 0; }
+
+/* ---- rows ---- */
+.mt-on .mt-row-wrap {
+  width: 92vh;
+  margin-bottom: 0.4vh;
+}
+.mt-on .tile.mod-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 92vh;
+  min-width: 0;
+  height: 4.6vh;
+  padding: 0 1.2vh 0 2.6vh;
+  box-sizing: border-box;
+  font-size: var(--font-size-description);
+}
+.mt-on .mod-row .mt-cell {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow: hidden;
+  padding-right: 0.8vh;
+  box-sizing: border-box;
+}
+.mt-on .mod-row .mt-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mt-on .mod-row .mt-cell--name .mt-text {
+  font-weight: bold;
+}
+.mt-on .mod-row .mt-value {
+  color: var(--green);
+  font-weight: bold;
+}
+.mt-on .mod-row.tile--selected .mt-value {
+  color: hsl(170, 100%, 22%);
+}
+.mt-on .mod-row .mt-cell--bad {
+  color: var(--warning-color);
+}
+.mt-on .mod-row--blocked {
+  opacity: 0.5;
+}
+.mt-on .mod-row .notification-blip {
+  top: 50%;
+  right: auto;
+  left: 0.3vh;
+  bottom: auto;
+  transform: translate(0, -50%);
+}
+.mt-on .mt-tag {
+  flex-shrink: 0;
+  margin-left: 0.8vh;
+  padding: 0.1vh 0.6vh;
+  font-family: Interstate-BoldCondensed;
+  font-size: 1.3vh;
+  text-transform: uppercase;
+  border: 1px solid var(--default-color-border);
+}
+.mt-on .mt-tag--unique {
+  color: var(--caution-yellow);
+  border-color: var(--caution-yellow);
+}
+.mt-on .mod-row.tile--selected .mt-tag--unique {
+  color: hsl(46, 100%, 30%);
+  border-color: hsl(46, 100%, 30%);
+}
+.mt-on .mt-tag--on {
+  color: var(--active-color);
+  border-color: var(--active-color);
+}
+
+/* ---- tier badge ---- */
+.mt-on .mt-tier {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 2.6vh;
+  padding: 0 0.8vh;
+  border-left: 0.5vh solid var(--rarity-common);
+  background: var(--light95-25);
+  color: var(--selected-color);
+  font-size: 1.5vh;
+  white-space: nowrap;
+}
+.mt-on .mod-row.tile--selected .mt-tier {
+  color: var(--text-selected-color);
+}
+.mt-on .mt-tier__num {
+  font-family: Interstate-BoldCondensed;
+  font-weight: bold;
+  min-width: 2.2vh;
+}
+.mt-on .mt-tier__text {
+  margin-left: 0.6vh;
+  text-transform: uppercase;
+  font-size: 1.3vh;
+}
+.mt-on .mt-tier--common { border-left-color: var(--rarity-common); }
+.mt-on .mt-tier--uncommon { border-left-color: var(--rarity-uncommon); background: rgba(69, 145, 132, 0.3); }
+.mt-on .mt-tier--rare { border-left-color: var(--rarity-rare); background: rgba(67, 102, 139, 0.4); }
+.mt-on .mt-tier--legendary { border-left-color: var(--rarity-legendary); background: rgba(157, 88, 50, 0.4); }
+.mt-on .mt-tier--exquisite { border-left-color: var(--rarity-exquisite); background: rgba(177, 50, 80, 0.4); }
+.mt-on .mt-tier--ascendant { border-left-color: var(--rarity-ascendant); background: rgba(161, 80, 168, 0.4); }
+
+/* ---- damage ---- */
+.mt-on .mt-wline {
+  margin-bottom: 0.9vh;
+  padding: 0.6vh 1.2vh;
+  background: var(--light95-25);
+  border-left: 0.5vh solid var(--green);
+}
+.mt-on .mt-wline .mt-label {
+  width: auto;
+  margin: 0 1vh 0 2vh;
+}
+.mt-on .mt-wline__name {
+  font-family: Interstate-BoldCondensed;
+  font-size: var(--font-size-label);
+  text-transform: uppercase;
+  color: var(--selected-color);
+}
+.mt-on .mt-wline__cond {
+  margin-left: 2vh;
+  font-size: var(--font-size-description);
+  color: var(--text-default-color);
+}
+.mt-on .mt-dmg {
+  font-weight: bold;
+  font-size: var(--font-size-description);
+  color: var(--selected-color);
+}
+.mt-on .mod-row.tile--selected .mt-dmg {
+  color: var(--text-selected-color);
+}
+.mt-on .mt-dmg__delta {
+  margin-left: 0.8vh;
+  font-size: 1.4vh;
+  color: var(--green);
+}
+.mt-on .mod-row.tile--selected .mt-dmg__delta {
+  color: hsl(170, 100%, 22%);
+}
+.mt-on .mt-dmg__tag {
+  margin-left: 0.8vh;
+  font-size: 1.2vh;
+  text-transform: uppercase;
+  color: var(--text-default-color);
+  white-space: nowrap;
+}
+.mt-on .mt-dim {
+  margin-left: 1vh;
+  font-size: var(--font-size-description);
+  color: var(--text-default-color);
+}
+.mt-on .mt-cell--damage .mt-dim {
+  margin-left: 0;
+}
+
+/* ---- weapon tile readout (narrow strip under the weapon name; the gun art and the
+   EQUIPPED label own the rest of the tile) ---- */
+.mt-on .mt-wstats {
+  position: absolute;
+  left: 1.6vh;
+  top: 5.1vh;
+  max-width: 6.6vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  pointer-events: none;
+}
+.mt-on .mt-wstats__line {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  white-space: nowrap;
+}
+.mt-on .mt-wstats__label {
+  font-family: Interstate-BoldCondensed;
+  font-size: 1.2vh;
+  line-height: 1.2vh;
+  text-transform: uppercase;
+  color: var(--text-default-color);
+}
+.mt-on .mt-wstats__num {
+  font-weight: bold;
+  font-size: 2.1vh;
+  line-height: 2.2vh;
+  color: var(--selected-color);
+}
+.mt-on .mt-wstats__sub {
+  font-size: 1.25vh;
+  line-height: 1.5vh;
+  color: var(--text-default-color);
+}
+.mt-on .tile--selected .mt-wstats__label,
+.mt-on .tile--selected .mt-wstats__sub,
+.mt-on .tile--selected .mt-wstats__num {
+  color: var(--text-selected-color);
+}
+
+.mt-on .mt-dmg__delta--neg {
+  color: var(--warning-color);
+}
+.mt-on .mod-row.tile--selected .mt-dmg__delta--neg {
+  color: hsl(356, 80%, 40%);
+}
+.mt-on .mt-cell--damage .mt-dmg,
+.mt-on .mt-cell--damage .mt-dmg__delta {
+  flex-shrink: 0;
+}
+.mt-on .mt-cell--damage .mt-dmg__tag {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- small icon (left of the name) ---- */
+.mt-on .mt-head--icon, .mt-on .mt-cell--icon { width: 3.8vh; flex-shrink: 0; }
+.mt-on .mt-cell--icon { padding-right: 0; overflow: visible; }
+.mt-on .mt-icon {
+  position: relative;
+  width: 3vh;
+  height: 3vh;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+/* the glyph fills the central 60% of the canvas: scale up 1/0.6 and keep it centred */
+.mt-on .mt-icon .background-image {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 166.6667%;
+}
+.mt-on .mt-icon--raw .background-image {
+  background-size: contain;
+}
+.mt-on .mod-row--blocked .mt-icon {
+  opacity: 0.6;
+}
