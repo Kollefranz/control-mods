@@ -6,7 +6,10 @@
 - Delivered as a loose-file override of `data/uiresources/p7/hud.ui` plus the bundled Loose Files Loader.
 - Weapon damage on weapon tiles (with/without mods) and a Damage column in the mod table.
   Verified in the browser harness against an independent calculation; needs an in-game check
-  (see README "Damage numbers", assumption about `m_iDamage`).
+  (see docs/GUIDE.md "Damage numbers", assumption about `m_iDamage`).
+
+- Inventory cap for Weapon Mods / Personal Mods raised to 500 (configurable) via an in-memory plugin
+  (`native/`). Counter shows 50/500 in the real game (docs/GUIDE.md "Bigger mod inventory").
 
 ## Later / ideas
 - Damage multipliers per enemy type (not in the UI data; would need the game's balance data).
