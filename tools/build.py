@@ -152,7 +152,7 @@ def patch_js(js, module_src):
     return js
 
 
-LOADER_DLL = os.path.join(
+VORTEX_LOADER = os.path.join(
     os.environ.get("APPDATA", ""),
     "Vortex",
     "control",
@@ -160,23 +160,46 @@ LOADER_DLL = os.path.join(
     "Loose Files Loader 1.1-11-1-1-1577247191",
     "iphlpapi.dll",
 )
+LOADER_CACHE = os.path.join(ROOT, "build", "vendor", "LooseFilesLoader.bin")
+
+
+def loader_dll():
+    """reg2k's Loose Files Loader, cached under build/ so packaging does not depend on Vortex's folder."""
+    if not os.path.isfile(LOADER_CACHE):
+        if not os.path.isfile(VORTEX_LOADER):
+            sys.exit("Loose Files Loader DLL not found; put a copy at " + LOADER_CACHE)
+        os.makedirs(os.path.dirname(LOADER_CACHE), exist_ok=True)
+        shutil.copyfile(VORTEX_LOADER, LOADER_CACHE)
+    return LOADER_CACHE
 
 
 def package():
-    """Zip hud.ui together with reg2k's Loose Files Loader DLL (from your own Vortex staging)."""
+    """hud.ui + a plugin that loads the bundled Loose Files Loader (no iphlpapi.dll in the mod)."""
     import zipfile
 
+    sys.path.insert(0, os.path.join(ROOT, "tools"))
+    import build_native
+
+    plugin = build_native.compile_loader()
+    loader = loader_dll()
     out_dir = os.path.join(ROOT, "dist")
     zip_path = os.path.join(out_dir, "Control-ModTable.zip")
+    files = {
+        "data/uiresources/p7/hud.ui": DIST,
+        "plugins/ControlModTableLoader.dll": plugin,
+        "plugins/ControlModTable/LooseFilesLoader.bin": loader,
+    }
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
-        z.write(DIST, "data/uiresources/p7/hud.ui")
-        if os.path.isfile(LOADER_DLL):
-            z.write(LOADER_DLL, "iphlpapi.dll")
-            shutil.copyfile(LOADER_DLL, os.path.join(out_dir, "ControlModTable", "iphlpapi.dll"))
-            print("bundled Loose Files Loader DLL")
-        else:
-            print("WARNING: Loose Files Loader DLL not found; zip needs the loader enabled separately")
-    print("wrote", zip_path)
+        for arc, src in files.items():
+            z.write(src, arc)
+            dst = os.path.join(out_dir, "ControlModTable", *arc.split("/"))
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+            if os.path.abspath(src) != os.path.abspath(dst):
+                shutil.copyfile(src, dst)
+    stale = os.path.join(out_dir, "ControlModTable", "iphlpapi.dll")
+    if os.path.exists(stale):
+        os.remove(stale)
+    print("wrote", zip_path, "(loader sha256 %s)" % hashlib.sha256(open(loader, "rb").read()).hexdigest()[:16])
 
 
 def node_check(path):
